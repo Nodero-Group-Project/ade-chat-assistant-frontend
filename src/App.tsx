@@ -1,12 +1,12 @@
 import Button from "./components/Button";
-import TextForm from "./components/TextForm";
+import ChatInput from "./components/ChatInput";
 import { useState } from "react";
 
 function App() {
-  
+
   return (
     <div>
-      <TextForm></TextForm>
+      <ChatInput></ChatInput>
     </div>
   );
 }

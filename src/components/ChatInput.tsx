@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 
-function TextForm() {
+function ChatInput() {
 
   // 1. Declare state to hold the textbox value
   const [inputValue, setInputValue] = useState('');
@@ -39,4 +39,4 @@ function TextForm() {
   );
 }
 
-export default TextForm
+export default ChatInput
