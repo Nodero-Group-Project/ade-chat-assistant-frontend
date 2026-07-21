@@ -27,10 +27,10 @@ function TextForm() {
                 type="text"
                 value={inputValue}
                 onChange={handleInputChange}
-                placeholder="Type something here..."
+                placeholder="Ask a question"
             />
             <button type='submit'>
-                Submit
+                Search
             </button>
         </form>
 
