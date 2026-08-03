@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useState } from 'react';
-
-function ChatInput() {
+import React, { ChangeEvent } from 'react';
+import {useState, useEffect} from 'react';
+export function ChatInput() {
 
   // 1. Declare state to hold the textbox value
   const [inputValue, setInputValue] = useState('');
@@ -14,9 +14,26 @@ function ChatInput() {
   };
 
   // 4. Handle button click / form submission
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmittedValue(inputValue);
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/report?question=${encodeURIComponent(inputValue)}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      
+    } catch (error) {
+      console.error(error);
+    }
+
     setInputValue(''); // Clear the textbox after clicking
   };
 
@@ -34,7 +51,8 @@ function ChatInput() {
             </button>
         </form>
 
-        {submittedValue && (<p>You submitted: {submittedValue}</p>)}
+        {/* If there is value in the submittedValue then show the user's question */}
+        {submittedValue && (<p>Question: <br></br> {submittedValue}</p>)}
     </div>
   );
 }
