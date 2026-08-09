@@ -2,18 +2,21 @@ import React, { ChangeEvent } from 'react';
 import {useState, useEffect} from 'react';
 export function ChatInput() {
 
-  // 1. Declare state to hold the textbox value
+  // Declare state to hold the textbox value/question
   const [inputValue, setInputValue] = useState('');
   
-  // 2. Declare state to display the submitted text
+  // Declare state to display the submitted text/question
   const [submittedValue, setSubmittedValue] = useState('');
 
-  // 3. Update state as the user types
+  // To store the results
+  const [results, setResults] = useState<any>(null);
+
+  // Update state as the user types
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
-  // 4. Handle button click / form submission
+  // Handle button click / form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmittedValue(inputValue);
@@ -29,6 +32,9 @@ export function ChatInput() {
 
       const data = await response.json();
       console.log(data);
+
+      // Store the API response
+      setResults(data);
       
     } catch (error) {
       console.error(error);
@@ -39,6 +45,7 @@ export function ChatInput() {
 
   return (
     <div>
+        {/* Search */}
         <form onSubmit={handleSubmit}>
             <input 
                 type="text"
@@ -52,7 +59,26 @@ export function ChatInput() {
         </form>
 
         {/* If there is value in the submittedValue then show the user's question */}
-        {submittedValue && (<p>Question: <br></br> {submittedValue}</p>)}
+        {submittedValue && (
+          <div>
+            <p>
+              <strong>Question:</strong> 
+              <br /> 
+              {submittedValue}
+            </p>
+          </div>
+        )}
+
+
+        {/* Results container */}
+        {results && (
+          <div className="results-container">
+            <h2>Results</h2>
+            <pre>
+              {JSON.stringify(results, null, 2)}
+            </pre>
+          </div>
+        )}
     </div>
   );
 }
