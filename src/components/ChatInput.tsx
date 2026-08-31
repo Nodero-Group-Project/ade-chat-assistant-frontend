@@ -23,7 +23,7 @@ export function ChatInput() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/report?question=${encodeURIComponent(inputValue)}`
+        `http://127.0.0.1:8000/report?q=${encodeURIComponent(inputValue)}`
       );
 
       if (!response.ok) {
