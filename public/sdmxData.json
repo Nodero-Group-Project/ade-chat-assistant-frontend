@@ -1,0 +1,412 @@
+{
+  "data": {
+    "meta": {
+      "schema": "https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/data-message/tools/schemas/2.0.0/sdmx-json-data-schema.json",
+      "id": "IREF016776",
+      "prepared": "2026-08-25T10:50:02Z",
+      "test": true,
+      "contentLanguages": [
+        "en"
+      ],
+      "sender": {
+        "id": "Dissemination-Statsnz",
+        "name": "unknown",
+        "names": {
+          "en": "unknown"
+        }
+      }
+    },
+    "data": {
+      "dataSets": [
+        {
+          "structure": 0,
+          "action": "Information",
+          "links": [
+            {
+              "urn": "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=STATSNZ:CEN23_HOU_001(1.0)",
+              "rel": "DataStructure"
+            }
+          ],
+          "annotations": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "dimensionGroupAttributes": {
+            "~:~:~:~:~": [
+              5
+            ]
+          },
+          "observations": {
+            "0:0:0:0:0": [
+              121293,
+              null
+            ],
+            "0:0:1:0:0": [
+              121332,
+              null
+            ],
+            "0:0:1:1:0": [
+              199842,
+              null
+            ],
+            "0:0:0:2:0": [
+              141612,
+              null
+            ],
+            "0:0:0:1:0": [
+              199788,
+              null
+            ],
+            "0:0:1:2:0": [
+              141666,
+              null
+            ]
+          }
+        }
+      ],
+      "structures": [
+        {
+          "name": "Access to basic amenities, total household income, and tenure of household for households in occupied private dwellings, (RC, TALB, SA2, Health), 2018 and 2023 Censuses",
+          "names": {
+            "en": "Access to basic amenities, total household income, and tenure of household for households in occupied private dwellings, (RC, TALB, SA2, Health), 2018 and 2023 Censuses"
+          },
+          "description": "Access to basic amenities (total responses), total household income, and tenure of household (level 1) for households in occupied private dwellings, for regional councils, territorial authorities and Auckland local boards, statistical area 2, health regions, health districts, 2018 and 2023 Censuses.",
+          "descriptions": {
+            "en": "Access to basic amenities (total responses), total household income, and tenure of household (level 1) for households in occupied private dwellings, for regional councils, territorial authorities and Auckland local boards, statistical area 2, health regions, health districts, 2018 and 2023 Censuses."
+          },
+          "dimensions": {
+            "dataSet": [],
+            "series": [],
+            "observation": [
+              {
+                "id": "CEN23_YEAR_001",
+                "name": "Census year",
+                "names": {
+                  "en": "Census year"
+                },
+                "keyPosition": 0,
+                "roles": [
+                  "CEN23_YEAR_001"
+                ],
+                "values": [
+                  {
+                    "id": "2023",
+                    "order": 2,
+                    "name": "2023",
+                    "names": {
+                      "en": "2023"
+                    },
+                    "annotations": [
+                      6
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "CEN23_GEO_013",
+                "name": "Area",
+                "names": {
+                  "en": "Area"
+                },
+                "keyPosition": 1,
+                "roles": [
+                  "CEN23_GEO_013"
+                ],
+                "values": [
+                  {
+                    "id": "9999",
+                    "order": 0,
+                    "name": "Total - New Zealand by regional council",
+                    "names": {
+                      "en": "Total - New Zealand by regional council"
+                    },
+                    "annotations": [
+                      7
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "CEN23_HOD_002",
+                "name": "Access to basic amenities",
+                "names": {
+                  "en": "Access to basic amenities"
+                },
+                "keyPosition": 2,
+                "roles": [
+                  "CEN23_HOD_002"
+                ],
+                "values": [
+                  {
+                    "id": "3",
+                    "order": 4,
+                    "name": "Kitchen sink",
+                    "names": {
+                      "en": "Kitchen sink"
+                    },
+                    "parent": "99",
+                    "parents": [
+                      "99"
+                    ],
+                    "annotations": [
+                      8
+                    ]
+                  },
+                  {
+                    "id": "6",
+                    "order": 7,
+                    "name": "Toilet",
+                    "names": {
+                      "en": "Toilet"
+                    },
+                    "parent": "99",
+                    "parents": [
+                      "99"
+                    ],
+                    "annotations": [
+                      9
+                    ]
+                  },
+                  {
+                    "id": "99",
+                    "order": 0,
+                    "name": "Total - access to basic amenities",
+                    "names": {
+                      "en": "Total - access to basic amenities"
+                    },
+                    "annotations": [
+                      7
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "CEN23_TIH_001",
+                "name": "Total household income",
+                "names": {
+                  "en": "Total household income"
+                },
+                "keyPosition": 3,
+                "roles": [
+                  "CEN23_TIH_001"
+                ],
+                "values": [
+                  {
+                    "id": "5",
+                    "order": 5,
+                    "name": "$70,001-$100,000",
+                    "names": {
+                      "en": "$70,001-$100,000"
+                    },
+                    "parent": "99",
+                    "parents": [
+                      "99"
+                    ],
+                    "annotations": [
+                      10
+                    ]
+                  },
+                  {
+                    "id": "6",
+                    "order": 6,
+                    "name": "$100,001-$150,000",
+                    "names": {
+                      "en": "$100,001-$150,000"
+                    },
+                    "parent": "99",
+                    "parents": [
+                      "99"
+                    ],
+                    "annotations": [
+                      11
+                    ]
+                  },
+                  {
+                    "id": "7",
+                    "order": 7,
+                    "name": "$150,001-$200,000",
+                    "names": {
+                      "en": "$150,001-$200,000"
+                    },
+                    "parent": "99",
+                    "parents": [
+                      "99"
+                    ],
+                    "annotations": [
+                      9
+                    ]
+                  },
+                  {
+                    "id": "99",
+                    "order": 0,
+                    "name": "Total - total household income",
+                    "names": {
+                      "en": "Total - total household income"
+                    },
+                    "annotations": [
+                      7
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "CEN23_THD_001",
+                "name": "Tenure of household",
+                "names": {
+                  "en": "Tenure of household"
+                },
+                "keyPosition": 4,
+                "roles": [
+                  "CEN23_THD_001"
+                ],
+                "values": [
+                  {
+                    "id": "001",
+                    "order": 1,
+                    "name": "Dwelling owned or partly owned",
+                    "names": {
+                      "en": "Dwelling owned or partly owned"
+                    },
+                    "parent": "9999",
+                    "parents": [
+                      "9999"
+                    ],
+                    "annotations": [
+                      12
+                    ]
+                  },
+                  {
+                    "id": "9999",
+                    "order": 0,
+                    "name": "Total - tenure of household",
+                    "names": {
+                      "en": "Total - tenure of household"
+                    },
+                    "annotations": [
+                      7
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "attributes": {
+            "dataSet": [],
+            "dimensionGroup": [],
+            "series": [],
+            "observation": [
+              {
+                "id": "OBS_STATUS",
+                "name": "Observation Status",
+                "names": {
+                  "en": "Observation Status"
+                },
+                "roles": [
+                  "OBS_STATUS"
+                ],
+                "relationship": {
+                  "observation": {}
+                },
+                "values": []
+              }
+            ]
+          },
+          "annotations": [
+            {
+              "type": "NonProductionDataflow",
+              "text": "true",
+              "texts": {
+                "en": "true"
+              }
+            },
+            {
+              "id": "@SDMX",
+              "title": "CEN23_GEO_013",
+              "type": "LAYOUT_ROW"
+            },
+            {
+              "id": "@SDMX",
+              "title": "CEN23_YEAR_001,CEN23_HOD_002,CEN23_TIH_001,CEN23_THD_001",
+              "type": "LAYOUT_COLUMN"
+            },
+            {
+              "id": "@SDMX",
+              "title": "CEN23_YEAR_001=2018+2023,CEN23_GEO_013=9999+999999+99999,CEN23_HOD_002=99,CEN23_TIH_001=99,CEN23_THD_001=9999",
+              "type": "DEFAULT"
+            },
+            {
+              "title": "urn:sdmx:org.sdmx.infomodel.metadatastructure.MetadataStructure=STATSNZ:MSD_CEN23(1.0)",
+              "type": "METADATA"
+            },
+            {
+              "type": "HAS_METADATA"
+            },
+            {
+              "id": "@SDMX",
+              "type": "ORDER",
+              "text": "3",
+              "texts": {
+                "en": "3"
+              }
+            },
+            {
+              "id": "@SDMX",
+              "type": "ORDER",
+              "text": "1",
+              "texts": {
+                "en": "1"
+              }
+            },
+            {
+              "id": "@SDMX",
+              "type": "ORDER",
+              "text": "5",
+              "texts": {
+                "en": "5"
+              }
+            },
+            {
+              "id": "@SDMX",
+              "type": "ORDER",
+              "text": "8",
+              "texts": {
+                "en": "8"
+              }
+            },
+            {
+              "id": "@SDMX",
+              "type": "ORDER",
+              "text": "6",
+              "texts": {
+                "en": "6"
+              }
+            },
+            {
+              "id": "@SDMX",
+              "type": "ORDER",
+              "text": "7",
+              "texts": {
+                "en": "7"
+              }
+            },
+            {
+              "id": "@SDMX",
+              "type": "ORDER",
+              "text": "2",
+              "texts": {
+                "en": "2"
+              }
+            }
+          ],
+          "dataSets": [
+            0
+          ]
+        }
+      ]
+    },
+    "errors": []
+  }
+}
