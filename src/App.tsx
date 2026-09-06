@@ -6,16 +6,13 @@ import { useState } from "react";
 
 function App() {
 
-  return (
-    <>
-    <h1>ADE Conversational Interface</h1>
+  return (   
     <div>
-      <ChatInput></ChatInput>
+      {/* <ChatInput></ChatInput> */}
       {/* <Table></Table> */}
-      <SdmxTable></SdmxTable>
+      {/* <SdmxTable></SdmxTable> */}
     </div>
-    </>
   );
-}
+};
 
 export default App;
