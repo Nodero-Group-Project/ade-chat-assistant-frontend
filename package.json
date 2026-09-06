@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@progress/kendo-react-charts": "^16.0.0",
+    "@progress/kendo-react-conversational-ui": "^16.0.0",
     "bootstrap": "^5.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
