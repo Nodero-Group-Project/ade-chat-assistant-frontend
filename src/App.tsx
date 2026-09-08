@@ -2,15 +2,14 @@ import Button from "./components/Button";
 import ChatInput from "./components/ChatInput";
 import Table from "./components/Table";
 import SdmxTable from "./components/SdmxTable";
+import RenderChat from "./components/RenderChat";
 import { useState } from "react";
 
-function App() {
 
+function App() {
   return (   
     <div>
-      {/* <ChatInput></ChatInput> */}
-      {/* <Table></Table> */}
-      {/* <SdmxTable></SdmxTable> */}
+      <RenderChat></RenderChat>
     </div>
   );
 };

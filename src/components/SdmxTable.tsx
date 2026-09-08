@@ -1,30 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-const SdmxTable = () => {
+interface SdmxTableProps {
+    data: any;
+}
+
+const SdmxTable = ({ data: sdmxData }: SdmxTableProps) => {
     
-    // holds the raw JSON once it's loaded. Starts as null because we don't have it yet
-    const [sdmxData, setSdmxData] = useState<any | null>(null);
-    const [loading, setLoading] = useState(true);
-
-
-   useEffect(() => {
-        fetch('/sdmxData.json')
-            .then((response) => response.json())
-            .then((data) => {
-                setSdmxData(data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error loading SDMX file: ", error);
-                setLoading(false);
-            });
-   }, []);
-
-    if (loading) return <p>Loading SDMX data...</p>;
+    // If there is no sdmxData returned return no data available
     if (!sdmxData) return <p>No data available</p>;
 
-    const dataset = sdmxData.data.data.dataSets[0];
-    const structure = sdmxData.data.data.structures[0];
+    const dataset = sdmxData.data.data.dataSets[0]; // to use the observations from the dataset
+    const structure = sdmxData.data.data.structures[0]; // to use the dimensions from the structure
     const dimensions = structure.dimensions.observation; // array of dimension info
     const observations = dataset.observations; // the actual values, keyed by weird strings
 
