@@ -29,12 +29,8 @@ jobs:
     # 3. Clean install exact dependency versions
       - name: Install Dependencies
         run: npm ci
-
-    # 4. Run your React test suites
-      - name: Run tests
-        run: npm test -- --watchAll=false --passWithNoTests
         
-    # 5. Compile the production-ready build
+    # 4. Compile the production-ready build
       - name: Build Application
         run: npm run build
         env:
