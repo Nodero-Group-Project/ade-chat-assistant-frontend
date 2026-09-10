@@ -4,11 +4,12 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import type { ChatPartRendererMap } from '@mui/x-chat/headless';
 import { reportAdapter } from '../adapter';
 import SdmxTable from './SdmxTable';
+import MuiTable from './MuiTable';
 
-// To display the results as a table from thge adapter 
-const partRenderers : ChatPartRendererMap = {
-  'data-sdmx-table': ({ part }) => <SdmxTable data = {part.data} />
-}
+// To display the results as a table from the adapter
+const partRenderers: ChatPartRendererMap = {
+  'data-sdmx-table': ({ part }) => <MuiTable data={part.data as any} />,
+};
 
 const theme = createTheme();
 const CONVERSATION_ID = 'quickstart';

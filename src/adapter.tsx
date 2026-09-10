@@ -11,7 +11,7 @@ export const reportAdapter : ChatAdapter = {
 
                 try {
                     const res = await fetch(
-                        `http://127.0.0.1:8000/report?q=${encodeURIComponent(text)}`,
+                        `${import.meta.env.VITE_API_URL}/report?q=${encodeURIComponent(text)}`,
                         { signal }
                     );
                     if (!res.ok) throw new Error(`Request failed: ${res.status}`);
