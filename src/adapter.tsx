@@ -1,5 +1,7 @@
 import type { ChatAdapter } from "@mui/x-chat/headless";
 
+// This adapter is used for backend connection to the frontend
+// Used for fetching the URL from the backend
 export const reportAdapter : ChatAdapter = {
     async sendMessage({message, signal}) {
         const text = message.parts[0]?.type === 'text' ? message.parts[0].text : '';
@@ -43,7 +45,7 @@ export const reportAdapter : ChatAdapter = {
                         return;
                     }
                 
-                    // Backend successfuly retrieved data
+                    // Backend successfully retrieved data
                     controller.enqueue({ type: 'text-start', id: 'text-1' });
                     controller.enqueue({
                         type: 'text-delta',

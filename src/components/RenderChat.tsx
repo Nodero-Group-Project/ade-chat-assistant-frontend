@@ -1,9 +1,8 @@
 'use client';
-import { ChatBox, createEchoAdapter } from '@mui/x-chat';
+import { ChatBox } from '@mui/x-chat';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import type { ChatPartRendererMap } from '@mui/x-chat/headless';
 import { reportAdapter } from '../adapter';
-import SdmxTable from './SdmxTable';
 import MuiTable from './MuiTable';
 
 // To display the results as a table from the adapter
@@ -35,11 +34,11 @@ export default function RenderChat() {
     return (
     <ThemeProvider theme={theme}>
         <ChatBox 
-            adapter={reportAdapter}
-            localeText={{composerInputPlaceholder: 'Ask anything...'}}
-            partRenderers={partRenderers}
-            features={{dateDivider: true, unreadMarker: true, attachments: false}}
-            initialConversations={initialConversations}
+            adapter={reportAdapter} // for backend connection
+            localeText={{composerInputPlaceholder: 'Ask anything...'}} // to change the placeholder name of the input
+            partRenderers={partRenderers} // to render the results in a table
+            features={{dateDivider: true, unreadMarker: true, attachments: false}} // to disable the attachment feature, enable both date divider and unread marker
+            initialConversations={initialConversations} // to display the initial state
             initialActiveConversationId={CONVERSATION_ID}
             initialMessages={initialMessages}
             // ChatBox fills its container 

@@ -1,9 +1,10 @@
 'use client';
 import * as React from 'react';
-import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'; 
 
+// Describing the shape of the dimension from SDMX JSON
 interface SdmxDimension {
     id: string;
     name: string;
@@ -13,11 +14,16 @@ interface SdmxDimension {
 
 interface SdmxTableProps {
     data: {
-        success: boolean;
-        selected_dataset?: { name: string };
+        success: boolean; // To see if the success is true or false
+        selected_dataset?: { name: string }; // If there is a selected dataset, get the name of it
         data: {
             data: {
-                dataSets: Array<{ observations: Record<string, Array<number | string | null>>}>;
+                // "observations": {
+                   // "0:0:0:0:0": [
+                   // 1780527,
+                   // null
+                  // ]
+                dataSets: Array<{ observations: Record<string, Array<number | string | null>> }>;
                 structures: Array<{
                     dimensions: { observation: SdmxDimension[] };
                 }>;
@@ -26,19 +32,34 @@ interface SdmxTableProps {
     };
 }
 
-function parseSdmx(data : SdmxTableProps['data']) {
-    const structure = data.data.data.structures?.[0];
-    const dataSet = data.data.data.dataSets?.[0];
+
+// The translation logic that turns the keyed strings "0:0:0:0:0" from observations into an array 
+// of plain row objects DataGrid can render
+function parseSdmx(sdmxData : SdmxTableProps['data']) {
+
+    const structure = sdmxData.data.data.structures?.[0]; // which describes what each dimension means
+    const dataSet = sdmxData.data.data.dataSets?.[0]; // which has the actual observations lookup table
+
+    // if either is missing, return null for defensive check reasons
     if (!structure || !dataSet) return null;
     
+    // Makes a brand new copy of that array so that we do not rearrange the original array
+    // So copy first then sort the copy, only local dims variable is reordered
+    // Sorting by key position guarantees dims[0] really is that dimension
     const dims = [...structure.dimensions.observation].sort(
-        (a, b) => a.keyPosition - b.keyPosition,
+        (a, b) => a.keyPosition - b.keyPosition, // If the function returns a negative number, a comes
+                                                // before b, if it returns positive, b comes before a
     );
 
+    // Object.entries turns { "0:0:0:0:0": [1780527, null] } into an array of [key, valueArray] pairs
     const rows = Object.entries(dataSet.observations).map(([key, valueArray], index) => {
+        // Splits "0:0:0:0:0" into ["0", "0", "0", "0", "0"] then converts each to a number
         const indices = key.split(':').map(Number);
         const row: Record<string, unknown> = { id: index };
 
+        // if dims[0] is "Census year" and indices[0] is 0, this fetches dims[0].values[0].name -> "2023",
+        // and stores it as row["CEN23_YEAR_001"] = "2023" 
+        // if that lookup somehow fails, show the raw index number instead of crashing
         dims.forEach((dim, i) => {
             row[dim.id] = dim.values[indices[i]]?.name ?? indices[i];
         });
@@ -51,6 +72,7 @@ function parseSdmx(data : SdmxTableProps['data']) {
 }
 
 export default function MuiTable({data}: SdmxTableProps) {
+    // only re-runs when data actually changes, not on every re-render
     const parsed = React.useMemo(() => parseSdmx(data), [data]);
 
     if (!parsed || parsed.rows.length === 0) {
@@ -59,6 +81,7 @@ export default function MuiTable({data}: SdmxTableProps) {
 
     const { dims, rows } = parsed;
 
+     // Building columns
     const columns: GridColDef[] = [
         ...dims.map((dim) => ({
             field: dim.id,
@@ -76,6 +99,7 @@ export default function MuiTable({data}: SdmxTableProps) {
         },
     ];
 
+    // .reduce() walks every row, accumulating a running sum
     const total = rows.reduce(
         (sum, row) => sum + (typeof row.value === 'number' ? row.value : 0), 
         0,
@@ -92,12 +116,11 @@ export default function MuiTable({data}: SdmxTableProps) {
             <DataGrid
                 rows={rows}
                 columns={columns}
-                slots={{toolbar: GridToolbar}}
-                slotProps={{ toolbar: { showQuickFilter: true}}}
+                showToolbar // for filtering
                 initialState={{
-                    pagination: {paginationModel: {pageSize: 10} },
+                    pagination: {paginationModel: {pageSize: 5} }, // 5 rows per page
                 }}
-                pageSizeOptions={[10, 25, 50]}
+                pageSizeOptions={[5, 15, 30]} // with a dropdown to switch to 15 rows or 30 rows
             />
         </Box>
         <Typography variant="caption" color="text.secondary">
