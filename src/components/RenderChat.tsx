@@ -37,7 +37,7 @@ export default function RenderChat() {
             adapter={reportAdapter} // for backend connection
             localeText={{composerInputPlaceholder: 'Ask anything...'}} // to change the placeholder name of the input
             partRenderers={partRenderers} // to render the results in a table
-            features={{dateDivider: true, unreadMarker: true, attachments: false}} // to disable the attachment feature, enable both date divider and unread marker
+            features={{attachments: false}} // to disable the attachment feature
             initialConversations={initialConversations} // to display the initial state
             initialActiveConversationId={CONVERSATION_ID}
             initialMessages={initialMessages}
