@@ -1,3 +1,4 @@
+// Initial template no longer used
 import React, { useState, useEffect } from 'react';
 
 interface SdmxTableProps {

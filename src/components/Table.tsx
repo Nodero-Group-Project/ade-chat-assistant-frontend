@@ -1,3 +1,4 @@
+// For dummy purposes
 import React from 'react'
 
 export function Table() {
