@@ -20,6 +20,7 @@ async function collectStream(stream: ReadableStream) {
 beforeEach(() => {
     // Changes the value of global variable
     vi.stubGlobal('fetch', mockFetch);
+    const controller = new AbortController();
 });
 
 // Reset everything after fetching
@@ -39,7 +40,7 @@ const fakeMessage = (text: string): ChatMessage => ({
     ],
 });
 
-const controller = new AbortController();
+
 const message = fakeMessage('how many people have access to basic amenities in 2023?');
 
 describe('reportAdapter.sendMessage', () => {
