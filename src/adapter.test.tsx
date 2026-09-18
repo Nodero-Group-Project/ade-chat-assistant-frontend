@@ -5,6 +5,7 @@ import type { ChatMessage } from '@mui/x-chat/headless';
 
 // Create a Vitest mock function for fetch
 const mockFetch = vi.fn();
+let controller: AbortController;
 
 async function collectStream(stream: ReadableStream) {
     const reader = stream.getReader();
@@ -20,7 +21,7 @@ async function collectStream(stream: ReadableStream) {
 beforeEach(() => {
     // Changes the value of global variable
     vi.stubGlobal('fetch', mockFetch);
-    const controller = new AbortController();
+    controller = new AbortController();
 });
 
 // Reset everything after fetching
