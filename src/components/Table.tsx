@@ -1,3 +1,4 @@
+// For dummy purposes
 import React from 'react'
 
 export function Table() {
@@ -47,7 +48,7 @@ export function Table() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr style={{borderBottom: 'thin solid #9e9e9e'}}>
                         <td style={{backgroundColor: '#e2f2fb', padding: '4px 8px', border: 'inherit', color: '#182026', verticalAlign: 'middle', borderRight: 'thin solid #9e9e9e', borderBottom: 'thin solid #9e9e9e'}}>{dummyData.amenities.name}</td>
                     </tr>
                     {dummyData.amenities.rows.map((row) => (

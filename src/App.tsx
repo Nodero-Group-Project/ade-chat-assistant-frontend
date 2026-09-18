@@ -1,19 +1,11 @@
-import Button from "./components/Button";
-import ChatInput from "./components/ChatInput";
-import Table from "./components/Table";
-import { useState } from "react";
+import RenderChat from "./components/RenderChat";
 
 function App() {
-
-  return (
-    <>
-    <h1>ADE Conversational Interface</h1>
+  return (   
     <div>
-      <ChatInput></ChatInput>
-      <Table></Table>
+      <RenderChat></RenderChat>
     </div>
-    </>
   );
-}
+};
 
 export default App;
