@@ -1,3 +1,4 @@
+import './App.css'
 import RenderChat from "./components/RenderChat";
 import Admin from "./components/Admin";
 
