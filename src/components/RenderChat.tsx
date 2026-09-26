@@ -63,7 +63,7 @@ export default function RenderChat() {
             // ChatBox fills its container 
             sx = {{
                 width: '100vw',
-                height: '100vh',
+                height: '85vh',
                 border: '1px solid',
                 borderColor: 'divider',
                 borderRadius: 1,
