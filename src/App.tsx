@@ -21,13 +21,13 @@ function App() {
       <nav style={{ margin: '20px' }}>
         <NavLink to="/chatbot" style={navLinkStyles}>Home</NavLink> | {" "}
         <NavLink to="/intents" style={navLinkStyles}>Intents</NavLink> | {" "}
-        <NavLink to="/skills" style={navLinkStyles}>Skills</NavLink>
+        <NavLink to="/datasets" style={navLinkStyles}>Datasets</NavLink>
       </nav>
 
       <Routes>
         <Route path="/chatbot" element={<RenderChat></RenderChat>} />
         <Route path="/intents" element={<Intent></Intent>} />
-        <Route path="/skills" element={<Dataset></Dataset>} />
+        <Route path="/datasets" element={<Dataset></Dataset>} />
       </Routes>
     </BrowserRouter>
   );
