@@ -5,6 +5,7 @@ import type { NavLinkRenderProps } from 'react-router-dom'
 import './App.css'
 import RenderChat from "./components/RenderChat";
 import Intent from "./components/Intent";
+import Dataset from "./components/Dataset";
 
 // Style function for active links
 const navLinkStyles = ({ isActive }: NavLinkRenderProps) => ({
@@ -26,7 +27,7 @@ function App() {
       <Routes>
         <Route path="/chatbot" element={<RenderChat></RenderChat>} />
         <Route path="/intents" element={<Intent></Intent>} />
-        {/* <Route path="/skills" element={} /> */}
+        <Route path="/skills" element={<Dataset></Dataset>} />
       </Routes>
     </BrowserRouter>
   );

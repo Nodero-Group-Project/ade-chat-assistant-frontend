@@ -4,30 +4,26 @@ interface Intent {
     Description: string;
 }
 
-export default function Admin() {
+export default function Intent() {
     // an array for the list of intents
     const [intents, setIntents] = useState<Intent[]>([]);
     // a string for the new intent input value
     const [newIntent, setNewIntent] = useState("");
     // error messages
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState(null);
     // success message
     const [successMsg, setSuccessMsg] = useState("");
+    // an adding boolean to check if an intent is being added
     const [adding, setAdding] = useState(false);
-    // a loading boolean to check if an intent is being deleted
+    // a loading boolean to inform user the status
     const [loading, setLoading] = useState(false);
+    // a 
     const [deletingDescription, setDeletingDescription] = useState<string | null>(null)
-
-    const getErrorMessage = (error: unknown) => {
-        if (error instanceof Error) return error.message;
-        if (error && typeof error === 'object' && 'message' in error) return String(error.message);
-        if (typeof error === 'string') return error;
-        return "An unknown error occurred.";
-    };
 
     const refreshIntents = useCallback(async () => {
             try {
                 setLoading(true);
+                setErrorMsg(null);
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/intent`);
 
                 if (!response.ok) {
@@ -36,8 +32,8 @@ export default function Admin() {
 
                 const result = await response.json();
                 setIntents(result);
-            } catch (err) {
-                setErrorMsg(getErrorMessage(err));
+            } catch (err: any) {
+                setErrorMsg(err.message || 'Something went wrong.');
             } finally {
                 setLoading(false);
             }
@@ -70,13 +66,13 @@ export default function Admin() {
                 return;
             }
             
-            setErrorMsg("");
+            setErrorMsg(null);
             setNewIntent('');
             setSuccessMsg("Intent added!");
             setTimeout(() => setSuccessMsg(""), 2000);
             await refreshIntents();
-        } catch (err) {
-            setErrorMsg(getErrorMessage(err));
+        } catch (err: any) {
+            setErrorMsg(err.message || 'Something went wrong.');
         } finally {
             setAdding(false);
         }
@@ -100,10 +96,10 @@ export default function Admin() {
                 setErrorMsg(result.message);
                 return;
             }
-            setErrorMsg("");
+            setErrorMsg(null);
             await refreshIntents();
-        } catch (err) {
-            setErrorMsg(getErrorMessage(err));
+        } catch (err: any) {
+            setErrorMsg(err.message || 'Something went wrong.');
         } finally {
             setDeletingDescription(null);
         }
