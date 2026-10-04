@@ -25,11 +25,11 @@ export default function Intent() {
 
         if(!silent) {
             toast.promise(request, {
-                loading: 'Loading datasets...',
-                success: 'Datasets are loaded!',
-                error: 'Could not load datasets.',
+                loading: 'Loading intents...',
+                success: 'Intents are loaded!',
+                error: 'Could not load intents.',
             },
-                { id: 'load-datasets'} // to prevent duplicate toasts for loading datasets
+                { id: 'load-intents'} // to prevent duplicate toasts for loading intents
             );
         }
 
