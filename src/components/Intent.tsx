@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast'
 
 interface Intent {
     Description: string;
@@ -9,35 +10,36 @@ export default function Intent() {
     const [intents, setIntents] = useState<Intent[]>([]);
     // a string for the new intent input value
     const [newIntent, setNewIntent] = useState("");
-    // error messages
-    const [errorMsg, setErrorMsg] = useState(null);
-    // success message
-    const [successMsg, setSuccessMsg] = useState("");
     // an adding boolean to check if an intent is being added
     const [adding, setAdding] = useState(false);
-    // a loading boolean to inform user the status
-    const [loading, setLoading] = useState(false);
-    // a 
     const [deletingDescription, setDeletingDescription] = useState<string | null>(null)
 
-    const refreshIntents = useCallback(async () => {
-            try {
-                setLoading(true);
-                setErrorMsg(null);
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/intent`);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error. Status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                setIntents(result);
-            } catch (err: any) {
-                setErrorMsg(err.message || 'Something went wrong.');
-            } finally {
-                setLoading(false);
+    const refreshIntents = useCallback(async (silent = false) => {
+        const request = (async () => {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/intent`);
+            if (!response.ok) {
+                throw new Error(`HTTP error. Status: ${response.status}`);
             }
-        }, []);
+            return response.json();
+        })();
+
+        if(!silent) {
+            toast.promise(request, {
+                loading: 'Loading datasets...',
+                success: 'Datasets are loaded!',
+                error: 'Could not load datasets.',
+            },
+                { id: 'load-datasets'} // to prevent duplicate toasts for loading datasets
+            );
+        }
+
+        try {
+            const result = await request;
+            setIntents(result);
+            } catch (err: any) {
+                if (silent) toast.error(err.message || "Could not refresh intents");
+            }
+    }, []);
         
     useEffect(() => {
         refreshIntents();
@@ -46,6 +48,7 @@ export default function Intent() {
     const handleAddClick = async () => {
         if (!newIntent.trim()) return; // Don't add empty strings
         setAdding(true);
+        const toastId = toast.loading("Adding intent...");
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/intent`, {
                 method: 'POST',
@@ -62,17 +65,15 @@ export default function Intent() {
             const result = await response.json();
 
             if (!result.success) {
-                setErrorMsg(result.message);
+                toast.error(result.message, { id: toastId });
                 return;
             }
             
-            setErrorMsg(null);
             setNewIntent('');
-            setSuccessMsg("Intent added!");
-            setTimeout(() => setSuccessMsg(""), 2000);
-            await refreshIntents();
+            toast.success("Intent added!", { id: toastId });
+            await refreshIntents(true);
         } catch (err: any) {
-            setErrorMsg(err.message || 'Something went wrong.');
+            toast.error(err.message || 'Something went wrong.');
         } finally {
             setAdding(false);
         }
@@ -80,6 +81,7 @@ export default function Intent() {
 
     const handleDeleteClick = async (description: string) => {
         setDeletingDescription(description);
+        const toastId = toast.loading("Deleting intent...")
         try {
             const response = await fetch(
                 `${import.meta.env.VITE_API_URL}/intent?description=${encodeURIComponent(description)}`,
@@ -93,13 +95,13 @@ export default function Intent() {
             const result = await response.json();
 
             if (!result.success) {
-                setErrorMsg(result.message);
+                toast.error(result.message, { id: toastId });
                 return;
             }
-            setErrorMsg(null);
-            await refreshIntents();
+            toast.success(result.message, { id: toastId })
+            await refreshIntents(true);
         } catch (err: any) {
-            setErrorMsg(err.message || 'Something went wrong.');
+            toast.error(err.message || 'Something went wrong.');
         } finally {
             setDeletingDescription(null);
         }
@@ -107,13 +109,7 @@ export default function Intent() {
 
     return (
         <div className='max-w-md mx-auto my-8 p-6 border border-gray-200 rounded-lg shadow-sm'>
-            <h2 className='text-center text-xl font-bold mb-4 text-gray-800'>My Intents List</h2>
-            <div className='text-center'>
-                {loading && <p>Loading intents...</p>}
-                {errorMsg && <p style={{color: 'red'}}>{errorMsg}</p>}
-                {successMsg && <p className='text-green-600'>{successMsg}</p>}
-            </div>
-            
+            <h2 className='text-center text-xl font-bold mb-4 text-gray-800'>My Intents List</h2>    
             <div className='flex gap-2 mb-4'>
                 <input 
                     type="text"
