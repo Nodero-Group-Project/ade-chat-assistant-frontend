@@ -15,7 +15,7 @@ interface SdmxDimension {
 interface SdmxTableProps {
     data: {
         success: boolean; // To see if the success is true or false
-        selected_dataset?: { name: string }; // If there is a selected dataset, get the name of it
+        selected_dataset?: { name: string, filters: string }; // If there is a selected dataset, get the name and filters of it
         data: {
             data: {
                 // "observations": {
@@ -109,7 +109,8 @@ export default function MuiTable({data}: SdmxTableProps) {
         <Box sx={{ my: 1}}>
             {data.selected_dataset && (
                 <Typography variant="subtitle2" sx={{ mb: 0.5}}>
-                    {data.selected_dataset.name}
+                    {data.selected_dataset.name} <br></br>
+                    <span className='italic leading-loose'>You can ask about these filters: {data.selected_dataset.filters}</span>
                 </Typography>
             )}
         <Box sx={{ height: 500, width: '100%'}}>

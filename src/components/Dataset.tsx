@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import toast from 'react-hot-toast'
 
 interface Dataset {
     Id: string;
@@ -18,16 +19,20 @@ export default function Dataset() {
     const [skillInput, setSkillInput] = useState("");
     const [filtersInput, setFiltersInput] = useState("");
 
+    // edit inputs form
+    const [editIdInput, setEditIdInput] = useState("");
+    const [editNameInput, setEditNameInput] = useState("");
+    const [editDescriptionInput, setEditDescriptionInput] = useState("");
+    const [editSkillInput, setEditSkillInput] = useState("");
+    const [editFiltersInput, setEditFiltersInput] = useState("");
+
     // delete
     const [deletingId, setDeletingId] = useState<string | null>(null);
 
     // status checks
-    const [loading, setLoading] = useState(false);
     const [addStatus, setAddStatus] = useState(false);
     const [updating, setUpdating] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [message, setMessage] = useState("");
     const [validation, setValidation] = useState({
         id: "",
         name: "",
@@ -38,7 +43,7 @@ export default function Dataset() {
     });
 
     // Cleaning filters
-    const cleanFilters = (value: String) =>
+    const cleanFilters = (value: string) =>
         value
             .split(",") // breaks the string into pieces at every comma
             .map((f) => f.trim()) // removes the spaces from the start and end of each piece
@@ -49,12 +54,12 @@ export default function Dataset() {
     const validate = () => {
         let tempErrors = {id: "", name: "", description: "", skill: "", filters: "", id_length: ""};
         let isValid = true;
-        
+
         if (!idInput) { tempErrors.id = "ID is required."; isValid = false; }
         if (!nameInput) { tempErrors.name = "Name is required."; isValid = false; }
         if (!descriptionInput) { tempErrors.description = "Description is required."; isValid = false; }
         if (!skillInput) { tempErrors.skill = "Skill is required."; isValid = false; }
-        if (!filtersInput) {tempErrors.filters = "Filters is required."; isValid = false; }
+        if (!filtersInput) {tempErrors.filters = "Filters are required."; isValid = false; }
 
         if (idInput && idInput.length !== 13) {
             tempErrors.id_length = "Dataset id must have 13 characters.";
@@ -65,23 +70,44 @@ export default function Dataset() {
         return isValid;
     } 
 
+    const validateEdit = () => {
+        let tempErrors = {id: "", name: "", description: "", skill: "", filters: "", id_length: ""};
+        let isValid = true;
+
+        if (!editNameInput) { tempErrors.name = "Name is required."; isValid = false; }
+        if (!editDescriptionInput) { tempErrors.description = "Description is required."; isValid = false; }
+        if (!editSkillInput) { tempErrors.skill = "Skill is required."; isValid = false; }
+        if (!editFiltersInput) { tempErrors.filters = "Filters are required."; isValid = false; }
+
+        setValidation(tempErrors);
+        return isValid;
+    }
+
     // GET API
-    const getDatasets = useCallback(async () => {
-        try {
-            setLoading(true);
-            setError(null);
-
+    const getDatasets = useCallback(async (silent = false) => {
+        const request = (async () => {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/dataset`);
-
             if (!response.ok) {
                 throw new Error(`HTTP error. Status: ${response.status}`);
             }
-            const result = await response.json();
+            return response.json();
+        })();
+
+        if(!silent) {
+                toast.promise(request, {
+                    loading: 'Loading datasets...',
+                    success: 'Datasets are loaded!',
+                    error: 'Could not load datasets.',
+                },
+                { id: 'load-datasets'} // to prevent duplicate toasts for loading datasets
+            );
+        }
+        
+        try {
+            const result = await request;
             setDatasets(result);
         } catch (err: any) {
-            setError(err.message || 'Something went wrong');
-        } finally {
-            setLoading(false);
+            if (silent) toast.error(err.message || "Could not refresh datasets");
         }
     }, []);
 
@@ -93,6 +119,7 @@ export default function Dataset() {
     const handleAdd = async () => {
         if (!validate()) return; // only checks when the user actually tries to submit
         setAddStatus(true);
+        const toastId = toast.loading('Adding dataset...');
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/dataset`, {
                 method: 'POST',
@@ -109,21 +136,19 @@ export default function Dataset() {
             const result = await response.json();
 
             if (!result.success) {
-                setError(result.message);
+                toast.error(result.message, { id: toastId });
                 return;
             } 
             // Reset every input
-            setMessage(result.message);
-            setError(null);
+            toast.success(result.message, { id: toastId });
             setIdInput("");
             setNameInput("");
             setDescriptionInput("");
             setSkillInput("");
             setFiltersInput("");
-            setTimeout(() => setMessage(""), 2000);
-            await getDatasets();
+            await getDatasets(true);
         } catch (err: any) {
-            setError(err.message);
+            toast.error(err.message, {id: toastId });
         } finally {
             setAddStatus(false);
         }
@@ -131,6 +156,8 @@ export default function Dataset() {
 
     // DELETE API
     const handleDelete = async (id: string) => {
+     if (!window.confirm('Delete this dataset?')) return;
+        const toastId = toast.loading("Deleting dataset...");
         setDeletingId(id);
         try {
             const response = await fetch(
@@ -144,14 +171,13 @@ export default function Dataset() {
 
             const result = await response.json();
             if (!result.success) {
-                setError(result.message);
+                toast.error(result.message, { id: toastId});
                 return;
             } 
-            setMessage(result.message);
-            setError(null);
-            await getDatasets();
+            toast.success(result.message, { id: toastId});
+            await getDatasets(true);
         } catch (err: any) {
-            setError(err.message);
+            toast.error(err.message, { id: toastId});
         } finally {
             setDeletingId(null);
         }
@@ -159,27 +185,28 @@ export default function Dataset() {
 
     const handleEdit = (dataset: Dataset) => {
         setIsEditMode(true);
-        setIdInput(dataset.Id);
-        setNameInput(dataset.Name);
-        setDescriptionInput(dataset.Description);
-        setSkillInput(dataset.Skill);
-        setFiltersInput(dataset.Filters);
+        setEditIdInput(dataset.Id);
+        setEditNameInput(dataset.Name);
+        setEditDescriptionInput(dataset.Description);
+        setEditSkillInput(dataset.Skill);
+        setEditFiltersInput(dataset.Filters);
     };
 
     const handleCancelEdit = () => {
         setIsEditMode(false);
-        setIdInput("");
-        setNameInput("");
-        setDescriptionInput("");
-        setSkillInput("");
-        setFiltersInput("");
+        setEditIdInput("");
+        setEditNameInput("");
+        setEditDescriptionInput("");
+        setEditSkillInput("");
+        setEditFiltersInput("");
         setValidation({id: "", name: "", description: "", skill: "", id_length: "", filters: ""});
     }
 
     // UPDATE API
     const handleUpdate = async () => {
-        if (!validate()) return; // bail if invalid
+        if (!validateEdit()) return; // bail if invalid
         setUpdating(true);
+        const toastId = toast.loading("Updating dataset...");
         
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/dataset`, {
@@ -188,11 +215,11 @@ export default function Dataset() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    Id: idInput, 
-                    Name: nameInput, 
-                    Description: descriptionInput, 
-                    Skill: skillInput,
-                    Filters: cleanFilters(filtersInput),
+                    Id: editIdInput, 
+                    Name: editNameInput, 
+                    Description: editDescriptionInput, 
+                    Skill: editSkillInput,
+                    Filters: cleanFilters(editFiltersInput),
                 }),
             });
 
@@ -202,17 +229,15 @@ export default function Dataset() {
 
             const updatedResult = await response.json();
             if (!updatedResult.success) {
-                setError(updatedResult.message);
+                toast.error(updatedResult.message, { id: toastId });
                 return;
             }
 
-            setMessage(updatedResult.message);
-            setError(null);
+            toast.success(updatedResult.message, { id: toastId });
             handleCancelEdit(); // closes modal + resets fields
-            setTimeout(() => setMessage(""), 2000);
-            await getDatasets();
+            await getDatasets(true);
         } catch (err: any){
-            setError(err.message);
+            toast.error(err.message, { id: toastId });
         } finally {
             setUpdating(false);
         }
@@ -222,12 +247,6 @@ export default function Dataset() {
     return (
         <div className='max-w-3xl mx-auto p-6 border border-gray-200 rounded-lg shadow-sm'>
             <h2 className='text-center text-xl font-bold mb-4 text-gray-800'>My Datasets List</h2>
-            <div className='text-center'>
-                {loading && <p>Loading datasets...</p>}
-                {error && <p className='text-red-600'>{error}</p>}
-                {message && <p className='text-green-600'>{message}</p>}
-            </div>
-
             <div className='flex flex-col gap-2 mb-4'>
                 <label htmlFor='id'>Dataset Id:</label>
                 <input 
@@ -292,7 +311,7 @@ export default function Dataset() {
             <h4 className='mb-4'>Results:</h4>
             <div className='space-y-2'>
                 {datasets.map((dataset) => (
-                    <p 
+                    <div
                         key={dataset.Id}
                         className='px-3 py-2 bg-gray-50 border border-gray-100 rounded-md text-gray-700'
                     >
@@ -308,7 +327,7 @@ export default function Dataset() {
                             disabled={deletingId === dataset.Id}
                             >{deletingId === dataset.Id ? 'Deleting' : 'Delete'}</button>
                         </div>
-                    </p>
+                    </div>
                 ))}
             </div>
 
@@ -323,7 +342,7 @@ export default function Dataset() {
                             <input
                                 id='edit-id'
                                 type='text'
-                                value={idInput}
+                                value={editIdInput}
                                 disabled
                                 className='flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-100'
                             />
@@ -332,8 +351,8 @@ export default function Dataset() {
                             <input
                                 id='edit-name'
                                 type='text'
-                                value={nameInput}
-                                onChange={(e) => setNameInput(e.target.value)}
+                                value={editNameInput}
+                                onChange={(e) => setEditNameInput(e.target.value)}
                                 className='flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
                             />
                             {validation.name && <p className='text-red-500'>{validation.name}</p>}
@@ -342,8 +361,8 @@ export default function Dataset() {
                             <input
                                 id='edit-description'
                                 type='text'
-                                value={descriptionInput}
-                                onChange={(e) => setDescriptionInput(e.target.value)}
+                                value={editDescriptionInput}
+                                onChange={(e) => setEditDescriptionInput(e.target.value)}
                                 className='flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
                             />
                             {validation.description && <p className='text-red-500'>{validation.description}</p>}
@@ -351,18 +370,18 @@ export default function Dataset() {
                             <label htmlFor='edit-skill'>Dataset Skill:</label>
                             <textarea
                                 id='edit-skill'
-                                value={skillInput}
-                                onChange={(e) => setSkillInput(e.target.value)}
+                                value={editSkillInput}
+                                onChange={(e) => setEditSkillInput(e.target.value)}
                                 rows={6}
                                 className='flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
                             />
                             {validation.skill && <p className='text-red-500'>{validation.skill}</p>}
-                             <label htmlFor='filters'>Dataset Filters:</label>
+                             <label htmlFor='edit-filters'>Dataset Filters:</label>
                             <input
-                                id='filters'
+                                id='edit-filters'
                                 type='text'
-                                value={filtersInput}
-                                onChange={(e) => setFiltersInput(e.target.value)}
+                                value={editFiltersInput}
+                                onChange={(e) => setEditFiltersInput(e.target.value)}
                                 placeholder='Year, Age, Area, Gender'
                                 className='flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                             />

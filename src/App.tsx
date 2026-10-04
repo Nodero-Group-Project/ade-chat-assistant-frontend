@@ -1,4 +1,4 @@
-import { createRoot } from 'react-dom/client';
+import { Toaster } from 'react-hot-toast'
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
 import type { NavLinkRenderProps } from 'react-router-dom'
 
@@ -18,6 +18,7 @@ const navLinkStyles = ({ isActive }: NavLinkRenderProps) => ({
 function App() {
   return (   
     <BrowserRouter>
+     <Toaster position='top-center' />
       <nav style={{ margin: '20px' }}>
         <NavLink to="/chatbot" style={navLinkStyles}>Home</NavLink> | {" "}
         <NavLink to="/intents" style={navLinkStyles}>Intents</NavLink> | {" "}
