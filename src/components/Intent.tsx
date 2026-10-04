@@ -130,11 +130,11 @@ export default function Intent() {
             <ul className='space-y-2'>
                 {intents.map((intent) => (
                     <li 
-                        className='px-3 py-2 bg-gray-50 border border-gray-100 rounded-md text-gray-700'
+                        className='flex items-center justify-between gap-4 px-3 py-2 bg-gray-50 border border-gray-100 rounded-md text-gray-700'
                         key={intent.Description}>
-                        {intent.Description}
+                        <span className='flex-1 min-w-0 break-words'>{intent.Description}</span>
                         <button
-                            className="mx-4 px-3 py-1 bg-red-400 hover:bg-red-500 text-white font-medium transition-colors"
+                            className="shrink-0 w-24 px-3 py-1 rounded-md bg-red-400 hover:bg-red-500 text-white font-medium transition-colors"
                             onClick={() => handleDeleteClick(intent.Description)}
                             disabled={deletingDescription === intent.Description}
                         >

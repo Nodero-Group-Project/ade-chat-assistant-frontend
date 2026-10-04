@@ -5,6 +5,7 @@ interface Dataset {
     Name: string;
     Description: string;
     Skill: string;
+    Filters: string;
 }
 
 export default function Dataset() {
@@ -15,6 +16,7 @@ export default function Dataset() {
     const [nameInput, setNameInput] = useState("");
     const [descriptionInput, setDescriptionInput] = useState("");
     const [skillInput, setSkillInput] = useState("");
+    const [filtersInput, setFiltersInput] = useState("");
 
     // delete
     const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -32,17 +34,27 @@ export default function Dataset() {
         description: "",
         skill: "",
         id_length: "",
+        filters: "",
     });
+
+    // Cleaning filters
+    const cleanFilters = (value: String) =>
+        value
+            .split(",") // breaks the string into pieces at every comma
+            .map((f) => f.trim()) // removes the spaces from the start and end of each piece
+            .filter(Boolean) // throws away empty items
+            .join(", "); // glues the pieces back into one string
 
     // Validation
     const validate = () => {
-        let tempErrors = {id: "", name: "", description: "", skill: "", id_length: ""};
+        let tempErrors = {id: "", name: "", description: "", skill: "", filters: "", id_length: ""};
         let isValid = true;
         
         if (!idInput) { tempErrors.id = "ID is required."; isValid = false; }
         if (!nameInput) { tempErrors.name = "Name is required."; isValid = false; }
         if (!descriptionInput) { tempErrors.description = "Description is required."; isValid = false; }
         if (!skillInput) { tempErrors.skill = "Skill is required."; isValid = false; }
+        if (!filtersInput) {tempErrors.filters = "Filters is required."; isValid = false; }
 
         if (idInput && idInput.length !== 13) {
             tempErrors.id_length = "Dataset id must have 13 characters.";
@@ -87,7 +99,7 @@ export default function Dataset() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({Id: idInput, Name: nameInput, Description: descriptionInput, Skill: skillInput}),
+                body: JSON.stringify({Id: idInput, Name: nameInput, Description: descriptionInput, Skill: skillInput, Filters: cleanFilters(filtersInput)}),
             });
 
             if (!response.ok) {
@@ -107,6 +119,7 @@ export default function Dataset() {
             setNameInput("");
             setDescriptionInput("");
             setSkillInput("");
+            setFiltersInput("");
             setTimeout(() => setMessage(""), 2000);
             await getDatasets();
         } catch (err: any) {
@@ -150,6 +163,7 @@ export default function Dataset() {
         setNameInput(dataset.Name);
         setDescriptionInput(dataset.Description);
         setSkillInput(dataset.Skill);
+        setFiltersInput(dataset.Filters);
     };
 
     const handleCancelEdit = () => {
@@ -158,7 +172,8 @@ export default function Dataset() {
         setNameInput("");
         setDescriptionInput("");
         setSkillInput("");
-        setValidation({id: "", name: "", description: "", skill: "", id_length: ""});
+        setFiltersInput("");
+        setValidation({id: "", name: "", description: "", skill: "", id_length: "", filters: ""});
     }
 
     // UPDATE API
@@ -177,6 +192,7 @@ export default function Dataset() {
                     Name: nameInput, 
                     Description: descriptionInput, 
                     Skill: skillInput,
+                    Filters: cleanFilters(filtersInput),
                 }),
             });
 
@@ -254,6 +270,16 @@ export default function Dataset() {
                     className='flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                 />
                 {validation.skill && <p className='text-red-500'>{validation.skill}</p>}
+                <label htmlFor='filters'>Dataset Filters:</label>
+                <input
+                    id='filters'
+                    type='text'
+                    value={filtersInput}
+                    onChange={(e) => setFiltersInput(e.target.value)}
+                    placeholder='Year, Age, Area, Gender'
+                    className='flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                />
+                {validation.filters && <p className='text-red-500'>{validation.filters}</p>}
                 <button
                     className="px-4 py-2 border border-blue-300 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-medium transition-colors"
                     onClick={handleAdd} disabled={addStatus}
@@ -272,8 +298,6 @@ export default function Dataset() {
                     >
                         <span className='font-bold'>Id:</span> {dataset.Id} <br />
                         <span className='font-bold'>Name:</span> {dataset.Name} <br />
-                        <span className='font-bold'>Description:</span> {dataset.Description} <br />
-                        <span className='font-bold'>Skill:</span> {dataset.Skill}
                         <div className='flex gap-2 my-4'>
                             <button className="mx-2 px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white font-medium transition-colors"
                             onClick={() => handleEdit(dataset)}
@@ -333,6 +357,16 @@ export default function Dataset() {
                                 className='flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
                             />
                             {validation.skill && <p className='text-red-500'>{validation.skill}</p>}
+                             <label htmlFor='filters'>Dataset Filters:</label>
+                            <input
+                                id='filters'
+                                type='text'
+                                value={filtersInput}
+                                onChange={(e) => setFiltersInput(e.target.value)}
+                                placeholder='Year, Age, Area, Gender'
+                                className='flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                            />
+                            {validation.filters && <p className='text-red-500'>{validation.filters}</p>}
                         </div>
 
                         <div className='flex gap-2 mt-4 justify-end'>
