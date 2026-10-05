@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import PersonIcon from '@mui/icons-material/Person';
 import CssBaseline from '@mui/material/CssBaseline';
+import Typography from '@mui/material/Typography';
 
 // To display the results as a table from the adapter
 const partRenderers: ChatPartRendererMap = {
@@ -27,13 +28,16 @@ const theme = createTheme({
     palette: {
         mode: 'light',
         primary: { main: '#0e9aa7', contrastText: '#fff'},
-        background: { default: '#fbfdff', paper: '#ffffff'},
+        secondary: { main: '#6366f1'},
+        text: { primary: '#0f172a', secondary: '#64748b'},
+        background: { default: '#f6f8fc', paper: '#ffffff'},
         divider: alpha('#0f172a', 0.08),
     },
     shape: { borderRadius: 10 },
     typography: {
         fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-        body1: { fontSize: 15, lineHeight: 1.6},
+        body1: { fontSize: 15, lineHeight: 1.65},
+        body2: { fontSize: 13.5 },
     },
     components: {
         MuiOutlinedInput: {
@@ -44,18 +48,29 @@ const theme = createTheme({
                 },
             },
         },
-        MuiButtonBase: { defaultProps: {disableRipple: false }},
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    transition: 'transform .15s, background-color .15s'
+                }
+            }
+        }
     },
 });
 
 const CONVERSATION_ID = 'quickstart';
 
 // For the initial state
-const initialConversations = [{ id: CONVERSATION_ID, title: 'ADE Data Assistant' }];
+const initialConversations = [
+    { 
+      id: CONVERSATION_ID, 
+      title: 'ADE Data Assistant',
+    }
+];
 
 const assistantAuthor = {
     id: 'assistant',
-    displayName: 'ADE Data Assistant',
+    displayName: 'Assistant',
     role: 'assistant' as const,
 };
 
@@ -83,7 +98,8 @@ function CustomAvatar() {
         background: 'linear-gradient(135deg, #6366f1 0%, #2fc4d2 100%)',
         '& .icon-user': { display: 'none' },
         '[data-role="user"] &': {
-            background: 'linear-gradient(135deg, #6366f1 0%, #2fc4d2 100%)',
+            background: 'linear-gradient(135deg, #475569 0%, #94a3b8 100%)',
+            boxShadow: '0 2px 8px rgba(71, 85, 105, 0.3)',
             '& .icon-user': {display: 'block'},
             '& .icon-assistant': { display: 'none' },
         },
@@ -102,12 +118,25 @@ export default function RenderChat() {
             sx={{
                 minHeight: '100vh',
                 display: 'flex',
-                justifyContent: 'center',
+                flexDirection: 'column',
                 alignItems: 'center',
-                p: { xs: 0, sm: 0},
-                background: 'linear-gradient(180deg, #eef2ff 0%, #f5f7fb 100%)',
+                justifyContent: 'center',
+                gap: 2,
+                p: { xs: 0, sm: 3},
+                background: `
+                        radial-gradient(900px 400px at 15% -10%, ${alpha('#6366f1', 0.14)}, transparent 60%),
+                        radial-gradient(700px 400px at 90% 0%, ${alpha('#0e9aa7', 0.14)}, transparent 60%),
+                        #f6f8fc`,
             }}
         >
+            <Box sx={{display: {xs: 'none', sm: 'block'}, textAlign: 'center'}}>
+                <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: -0.3 }}>
+                    ADE Data Assistant
+                </Typography>
+                <Typography variant='body2' color="text.secondary">
+                    Ask questions about your data in plain language
+                </Typography>
+            </Box>
             <ChatBox 
             adapter={reportAdapter} // for backend connection
             localeText={{composerInputPlaceholder: 'Ask anything...'}} // to change the placeholder name of the input
@@ -121,12 +150,12 @@ export default function RenderChat() {
             sx = {{
                 width: '100%',
                 maxWidth: 1300,
-                height: { xs: '100vh', sm: '88vh'},
+                height: { xs: '100vh', sm: '84vh'},
                 bgcolor: 'background.paper',
                 border: 1,
                 borderColor: 'divider',
-                borderRadius: { xs: 0, sm: 4},
-                boxShadow: '0 20px 50px rgba(15, 23, 42, 0.08)',
+                borderRadius: { xs: 0, sm: 5},
+                boxShadow: '0 1px 2px rgba(15, 23, 42, 0.04), 0 24px 60px rgba(15,23,42,.10)',
                 overflow: 'hidden',
             }}
             slotProps={{
@@ -159,7 +188,8 @@ export default function RenderChat() {
                 },
                 composerSendButton: {
                     sx: {
-                        color: 'background.paper',
+                        color: 'primary.contrastText',
+                        bgcolor: 'primary.main'
                     }
                 },
             }}
