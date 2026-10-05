@@ -24,6 +24,7 @@ const partRenderers: ChatPartRendererMap = {
   ),
 };
 
+// Global styling for chat interface
 const theme = createTheme({
     palette: {
         mode: 'light',
@@ -89,6 +90,7 @@ const initialMessages = [
   },
 ];
 
+// For the avatar for assistant and user
 function CustomAvatar() {
     return (
     <Avatar sx={{ 
@@ -139,6 +141,12 @@ export default function RenderChat() {
             </Box>
             <ChatBox 
             adapter={reportAdapter} // for backend connection
+            suggestions={[
+                'How many people smoke in 2023?',
+                'How many Auckland students held a bachelor degree in 2018?',
+                'How many Pacific boys in Gisborne under 18 have internet access?'
+            ]}
+            suggestionsAutoSubmit
             localeText={{composerInputPlaceholder: 'Ask anything...'}} // to change the placeholder name of the input
             partRenderers={partRenderers} // to render the results in a table
             initialActiveConversationId={CONVERSATION_ID}
