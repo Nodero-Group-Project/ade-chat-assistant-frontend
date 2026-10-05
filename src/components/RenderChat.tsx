@@ -5,6 +5,7 @@ import { ThemeProvider, createTheme, alpha } from '@mui/material/styles';
 import type { ChatPartRendererMap } from '@mui/x-chat/headless';
 import { reportAdapter } from '../adapter';
 import MuiTable from './MuiTable';
+import TokenUsage  from './TokenUsage';
 import Box from '@mui/material/Box';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import PersonIcon from '@mui/icons-material/Person';
@@ -17,6 +18,9 @@ const partRenderers: ChatPartRendererMap = {
         <MuiTable data={part.data as any} />
     </Box>
   ),    
+  'data-token-usage': ({ part }) => (
+    <TokenUsage tokens={part.data as any} />
+  ),
 };
 
 const theme = createTheme({
