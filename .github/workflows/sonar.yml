@@ -1,30 +1,27 @@
 name: Sonar
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
-  analyze:
-    runs-on: ubuntu-latest
+  sonarqube:
+    name: SonarQube
+    runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       
-      - uses: actions/setup-node@v4
+      - name: Cache SonarQube packages
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          node-version: 20
-      
-      - name: Frontend tests with coverage
-        working-directory: ade-chat-assistant-frontend 
-        run: |
-          npm ci
-          npm run coverage
-
-      - name: SonarCloud scan
-        uses: SonarSource/sonarqube-scan-action@v5
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995 # v8.1.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
