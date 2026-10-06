@@ -18,7 +18,6 @@ export const reportAdapter : ChatAdapter = {
                     );
                     if (!res.ok) throw new Error(`Request failed: ${res.status}`);
                     const data = await res.json();
-
                     // Backend says the question could not be answered
                     if (!data.success) {
                         controller.enqueue({
@@ -36,6 +35,14 @@ export const reportAdapter : ChatAdapter = {
                             type: 'text-end',
                             id: 'text-1',
                         });
+
+                        if (data.tokens) {
+                            controller.enqueue({
+                                type: 'data-token-usage',
+                                id: 'tokens-1',
+                                data: data.tokens
+                            });
+                        }
 
                         controller.enqueue({
                             type: 'finish',
@@ -59,6 +66,14 @@ export const reportAdapter : ChatAdapter = {
                         id: 'sdmx-1',
                         data, // the raw SDMX JSON from my FastAPI response
                     });
+
+                    if (data.tokens) {
+                        controller.enqueue({
+                            type: 'data-token-usage',
+                            id: 'tokens-1',
+                            data: data.tokens,
+                        });
+                    }
 
                     controller.enqueue({ type: 'finish', messageId});
                 } catch (err) {
