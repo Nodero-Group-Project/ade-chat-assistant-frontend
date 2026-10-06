@@ -1,4 +1,9 @@
-<<<<<<< HEAD
+# Coverage output
+coverage/
+htmlcov/
+coverage.xml
+.coverage
+
 # Logs
 logs
 *.log
@@ -23,6 +28,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-=======
+
+# Environment
 /.env.local
->>>>>>> 88cd90da11fc20a1564a6ee893eeb82ea4dd83ff
