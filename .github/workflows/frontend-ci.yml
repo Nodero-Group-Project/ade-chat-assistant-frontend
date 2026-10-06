@@ -2,9 +2,9 @@ name: React Frontend CI
 
 on: 
   push:
-    branches: ["main", "sdmx-table-results"]
+    branches: ["main", "sdmx-table-results", "feature/suggestions", "admin-ui-form"]
   pull_request: 
-    branches: ["main", "sdmx-table-results"]
+    branches: ["main", "sdmx-table-results", "feature/suggestions", "admin-ui-form"]
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
