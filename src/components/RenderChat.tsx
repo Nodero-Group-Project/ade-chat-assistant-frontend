@@ -143,7 +143,7 @@ export default function RenderChat() {
             adapter={reportAdapter} // for backend connection
             suggestions={[
                 'How many people smoke in 2023?',
-                'How many Auckland students held a bachelor degree in 2018?',
+                'How many Auckland women held a bachelor degree in 2018 and 2023?',
                 'How many Pacific boys in Gisborne under 18 have internet access?'
             ]}
             suggestionsAutoSubmit
