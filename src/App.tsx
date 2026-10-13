@@ -1,35 +1,41 @@
 import { Toaster } from 'react-hot-toast'
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
-import type { NavLinkRenderProps } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom'
 
 import './App.css'
 import RenderChat from "./components/RenderChat";
-import Intent from "./components/Intent";
 import Dataset from "./components/Dataset";
+import Home from "./components/Home";
 
-// Style function for active links
-const navLinkStyles = ({ isActive }: NavLinkRenderProps) => ({
-    color: isActive ? '#1dd2e3' : '#fff',
-    textDecoration: isActive ? 'none' : 'underline',
-    fontWeight: isActive ? 'bold' : 'normal',
-    padding: '5px 10px'
-});
+function Nav() {
+    const { pathname } = useLocation();
+
+    const isLanding = pathname === '/';
+
+    if (isLanding) return null;
+    return (
+      <nav style={{ backgroundColor: '#282f37', padding: '7px', color: 'white', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <NavLink to="/"><img width="85px" src="/logo.png" /></NavLink>
+
+        {!isLanding && (
+          <NavLink to="/" style={{marginLeft: 'auto', color: 'white', textDecoration: 'underline'}}>Switch role</NavLink>
+        )}
+      </nav>
+    );
+}
 
 function App() {
   return (   
     <BrowserRouter>
      <Toaster position='top-center' />
-      <nav style={{ backgroundColor: '#282f37', padding: '7px', color: 'white', display: 'flex', alignItems: 'center', gap: '6px' }}>
-        <img width="85px" src="/logo.png" />
-        <NavLink to="/" style={navLinkStyles}>Home</NavLink> | {" "}
-        <NavLink to="/intents" style={navLinkStyles}>Intents</NavLink> | {" "}
-        <NavLink to="/datasets" style={navLinkStyles}>Datasets</NavLink>
-      </nav>
+      <Nav />
 
       <Routes>
-        <Route path="/" element={<RenderChat></RenderChat>} />
-        <Route path="/intents" element={<Intent></Intent>} />
-        <Route path="/datasets" element={<Dataset></Dataset>} />
+        {/* Landing page */}
+        <Route path="/" element={<Home />} />
+        {/* Regular user path */}
+        <Route path="/chat" element={<RenderChat />} />
+        {/* Admin path */}
+        <Route path="/admin/datasets" element={<Dataset />} />
       </Routes>
     </BrowserRouter>
   );
