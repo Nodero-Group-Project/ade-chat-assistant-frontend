@@ -19,8 +19,8 @@ function App() {
   return (   
     <BrowserRouter>
      <Toaster position='top-center' />
-      <nav style={{ backgroundColor: '#282f37', padding: '10px', color: 'white', display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <img width="150px" src="https://cdn.prod.website-files.com/663854450d5c9fbcd99cb187/68cb51772015b116e74cfb64_Nodero%20Logo.svg" />
+      <nav style={{ backgroundColor: '#282f37', padding: '7px', color: 'white', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <img width="85px" src="/logo.png" />
         <NavLink to="/" style={navLinkStyles}>Home</NavLink> | {" "}
         <NavLink to="/intents" style={navLinkStyles}>Intents</NavLink> | {" "}
         <NavLink to="/datasets" style={navLinkStyles}>Datasets</NavLink>
