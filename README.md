@@ -2,7 +2,7 @@
 **Natural-language interface for Aotearoa Data Explorer (ADE)**
 - The app lets users ask ADE data questions such as *"How many people smoke in 2023?"* in natural language rather than manually navigating table lists, filters, and classification schemes. 
 
-<img width="1892" height="966" alt="image" src="https://github.com/user-attachments/assets/b19f2b95-6046-42b5-aa52-05c541a99eab" />
+<img width="1907" height="906" alt="image" src="https://github.com/user-attachments/assets/ec0bd9e4-2b04-40bb-a6ef-0def50f9ae81" />
 
 ## Tech stack
 
@@ -59,4 +59,4 @@ src/
 ├── adapter.tsx        # Backend connection
 └── adapter.test.tsx   # Tests for the backend connection
 ```
-
+[![Architecture diagram](https://gitdiagram.com/diagram-badge.svg)](https://gitdiagram.com/nodero-group-project/ade-chat-assistant-frontend?utm_source=readme&utm_medium=badge)
