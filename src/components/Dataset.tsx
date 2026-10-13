@@ -33,6 +33,8 @@ export default function Dataset() {
     const [addStatus, setAddStatus] = useState(false);
     const [updating, setUpdating] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
+    
+    // validation check
     const [validation, setValidation] = useState({
         id: "",
         name: "",
@@ -156,7 +158,7 @@ export default function Dataset() {
 
     // DELETE API
     const handleDelete = async (id: string) => {
-     if (!window.confirm('Delete this dataset?')) return;
+     if (!window.confirm('Delete this dataset?')) return; // If the user didn't confirm to delete then skip this function
         const toastId = toast.loading("Deleting dataset...");
         setDeletingId(id);
         try {
