@@ -2,7 +2,8 @@
 **Natural-language interface for Aotearoa Data Explorer (ADE)**
 - The app lets users ask ADE data questions such as *"How many people smoke in 2023?"* in natural language rather than manually navigating table lists, filters, and classification schemes. 
 
-<img width="1907" height="906" alt="image" src="https://github.com/user-attachments/assets/ec0bd9e4-2b04-40bb-a6ef-0def50f9ae81" />
+<img width="1906" height="915" alt="image" src="https://github.com/user-attachments/assets/9e89cd4a-708b-426e-85a2-a97d4556c74f" />
+
 
 ## Tech stack
 
@@ -52,7 +53,6 @@ Backend repo: `<https://github.com/Nodero-Group-Project/ade-chat-assistant-backe
 src/
 ├── components/
 │   ├── Dataset        # Dataset page
-│   ├── Intent         # Intent page
 │   ├── MuiTable       # Renders data results in a table
 │   ├── RenderChat     # Chatbox interface
 │   └── TokenUsage     # Token consumption per user query
